@@ -27,7 +27,7 @@ public class Board extends JPanel implements ActionListener {
     private final Font smallFont = new Font("Helvetica", Font.BOLD, 14);
 
     private Image ii;
-    private final Color dotColor = new Color(192, 192, 0);
+    private final Color dotColor = new Color(255, 255, 255);
     private Color mazeColor;
 
     private boolean inGame = false;
@@ -57,12 +57,14 @@ public class Board extends JPanel implements ActionListener {
     private int pacman_x, pacman_y, pacmand_x, pacmand_y;
     private int req_dx, req_dy, view_dx, view_dy;
     
+    String s = "Press s to start.";
+    
     private final short levelData[] = {
-        19, 26, 26, 26, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
-        21, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        21, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        21, 0, 0, 0, 17, 16, 16, 24, 16, 16, 16, 16, 16, 16, 20,
-        17, 18, 18, 18, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 20,
+        19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 3, 2, 2, 2, 2, 17, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 9, 8, 8, 8, 8, 17, 24, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 20,
         17, 16, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 16, 24, 20,
         25, 16, 16, 16, 24, 24, 28, 0, 25, 24, 24, 16, 20, 0, 21,
         1, 17, 16, 20, 0, 0, 0, 0, 0, 0, 0, 17, 20, 0, 21,
@@ -101,7 +103,7 @@ public class Board extends JPanel implements ActionListener {
     private void initVariables() {
 
         screenData = new short[N_BLOCKS * N_BLOCKS];
-        mazeColor = new Color(5, 100, 5);
+        mazeColor = new Color(0, 255, 255);
         d = new Dimension(400, 400);
         ghost_x = new int[MAX_GHOSTS];
         ghost_dx = new int[MAX_GHOSTS];
@@ -122,19 +124,19 @@ public class Board extends JPanel implements ActionListener {
         initGame();
     }
 
-    private void doAnim() {
-
-        pacAnimCount--;
-
-        if (pacAnimCount <= 0) {
-            pacAnimCount = PAC_ANIM_DELAY;
-            pacmanAnimPos = pacmanAnimPos + pacAnimDir;
-
-            if (pacmanAnimPos == (PACMAN_ANIM_COUNT - 1) || pacmanAnimPos == 0) {
-                pacAnimDir = -pacAnimDir;
-            }
-        }
-    }
+//    private void doAnim() {
+//
+//        pacAnimCount--;
+//
+//        if (pacAnimCount <= 0) {
+//            pacAnimCount = PAC_ANIM_DELAY;
+//            pacmanAnimPos = pacmanAnimPos + pacAnimDir;
+//
+//            if (pacmanAnimPos == (PACMAN_ANIM_COUNT - 1) || pacmanAnimPos == 0) {
+//                pacAnimDir = -pacAnimDir;
+//            }
+//        }
+//    }
 
     private void playGame(Graphics2D g2d) {
 
@@ -157,10 +159,23 @@ public class Board extends JPanel implements ActionListener {
         g2d.fillRect(50, SCREEN_SIZE / 2 - 30, SCREEN_SIZE - 100, 50);
         g2d.setColor(Color.white);
         g2d.drawRect(50, SCREEN_SIZE / 2 - 30, SCREEN_SIZE - 100, 50);
-
+        
         String s = "Press s to start.";
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
+        
+        try {
+            FileReader file1 = new FileReader("images/pacman/marios.png");
+            file1.read();
+            FileReader file2 = new FileReader("images/pacman/pacman.png");
+            file2.read();
+            FileReader file3 = new FileReader("images/pacman/ghost.png");
+            file3.read();
+        }
+        	catch(Exception e) {
+        		s = "Please check your images file";
+        		inGame = false;
+        }
 
         g2d.setColor(Color.white);
         g2d.setFont(small);
@@ -198,8 +213,9 @@ public class Board extends JPanel implements ActionListener {
 
         if (finished) {
 
-            score += 50;
-
+            score = 0;
+            inGame = false;
+            
             if (N_GHOSTS < MAX_GHOSTS) {
                 N_GHOSTS++;
             }
@@ -486,7 +502,7 @@ public class Board extends JPanel implements ActionListener {
         for (i = 0; i < N_BLOCKS * N_BLOCKS; i++) {
             screenData[i] = levelData[i];
         }
-
+        
         continueLevel();
     }
 
@@ -541,6 +557,7 @@ public class Board extends JPanel implements ActionListener {
         pacman3right = new ImageIcon("images/pacman/right2.png").getImage();
         pacman4right = new ImageIcon("images/pacman/right3.png").getImage();
     	}
+    	
     	else{
             pacman1 = new ImageIcon("images/pacman/mario.png").getImage();
             pacman2up = new ImageIcon("images/pacman/mario.png").getImage();
@@ -556,15 +573,6 @@ public class Board extends JPanel implements ActionListener {
             pacman3right = new ImageIcon("images/pacman/mario.png").getImage();
             pacman4right = new ImageIcon("images/pacman/mario.png").getImage();
         	}
-    	
-    	 try {
-             FileReader file = new FileReader("images/pacman/mario.png");
-             file.read();
-         }
-         catch(Exception e) {
-        	 System.out.println("Cant start the game, Please check your image file");
-        	 inGame = false;
-         }
 
     }
 
@@ -584,7 +592,7 @@ public class Board extends JPanel implements ActionListener {
 
         drawMaze(g2d);
         drawScore(g2d);
-        doAnim();
+        //doAnim();
 
         if (inGame) {
             playGame(g2d);
