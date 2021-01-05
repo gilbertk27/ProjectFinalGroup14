@@ -42,7 +42,7 @@ public class Board extends JPanel implements ActionListener {
     private int pacAnimCount = PAC_ANIM_DELAY;
     private int pacAnimDir = 1;
     private int pacmanAnimPos = 0;
-    private int N_GHOSTS = 6;
+    private int N_GHOSTS = 5;
     private int pacsLeft, score;
     private int[] dx, dy;
     private int[] ghost_x, ghost_y, ghost_dx, ghost_dy, ghostSpeed;
@@ -54,7 +54,7 @@ public class Board extends JPanel implements ActionListener {
 
     private int pacman_x, pacman_y, pacmand_x, pacmand_y;
     private int req_dx, req_dy, view_dx, view_dy;
-
+    
     private final short levelData[] = {
         19, 26, 26, 26, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
         21, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
@@ -474,7 +474,7 @@ public class Board extends JPanel implements ActionListener {
         pacsLeft = 3;
         score = 0;
         initLevel();
-        N_GHOSTS = 6;
+        N_GHOSTS = 5;
         currentSpeed = 3;
     }
 
@@ -522,7 +522,8 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void loadImages() {
-
+    	
+    	if (pacsLeft==3 || pacsLeft==1) {
         ghost = new ImageIcon("images/pacman/ghost.png").getImage();
         pacman1 = new ImageIcon("images/pacman/pacman.png").getImage();
         pacman2up = new ImageIcon("images/pacman/up1.png").getImage();
@@ -537,6 +538,28 @@ public class Board extends JPanel implements ActionListener {
         pacman2right = new ImageIcon("images/pacman/right1.png").getImage();
         pacman3right = new ImageIcon("images/pacman/right2.png").getImage();
         pacman4right = new ImageIcon("images/pacman/right3.png").getImage();
+    	}
+    	else{
+            ghost = new ImageIcon("images/pacman/ghost.png").getImage();
+            pacman1 = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman2up = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman3up = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman4up = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman2down = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman3down = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman4down = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman2left = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman3left = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman4left = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman2right = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman3right = new ImageIcon("images/pacman/mario.png").getImage();
+            pacman4right = new ImageIcon("images/pacman/mario.png").getImage();
+        	}
+//        try {
+//            readFailingFile();
+//        } catch (FileNotFoundException ex) {
+//            LOG.error("Optional file " + fileName + " was not found.", ex);
+//        }
 
     }
 
@@ -560,6 +583,7 @@ public class Board extends JPanel implements ActionListener {
 
         if (inGame) {
             playGame(g2d);
+            loadImages();
         } else {
             showIntroScreen(g2d);
         }
