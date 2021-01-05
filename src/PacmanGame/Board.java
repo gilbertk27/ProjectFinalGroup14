@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -540,7 +542,6 @@ public class Board extends JPanel implements ActionListener {
         pacman4right = new ImageIcon("images/pacman/right3.png").getImage();
     	}
     	else{
-            ghost = new ImageIcon("images/pacman/ghost.png").getImage();
             pacman1 = new ImageIcon("images/pacman/mario.png").getImage();
             pacman2up = new ImageIcon("images/pacman/mario.png").getImage();
             pacman3up = new ImageIcon("images/pacman/mario.png").getImage();
@@ -555,11 +556,15 @@ public class Board extends JPanel implements ActionListener {
             pacman3right = new ImageIcon("images/pacman/mario.png").getImage();
             pacman4right = new ImageIcon("images/pacman/mario.png").getImage();
         	}
-//        try {
-//            readFailingFile();
-//        } catch (FileNotFoundException ex) {
-//            LOG.error("Optional file " + fileName + " was not found.", ex);
-//        }
+    	
+    	 try {
+             FileReader file = new FileReader("images/pacman/mario.png");
+             file.read();
+         }
+         catch(Exception e) {
+        	 System.out.println("Cant start the game, Please check your image file");
+        	 inGame = false;
+         }
 
     }
 
