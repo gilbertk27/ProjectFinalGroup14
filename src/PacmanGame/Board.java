@@ -61,10 +61,10 @@ public class Board extends JPanel implements ActionListener {
     
     private final short levelData[] = {
         19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
-        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        17, 3, 2, 2, 2, 2, 17, 16, 16, 16, 16, 16, 16, 16, 20,
-        17, 9, 8, 8, 8, 8, 17, 24, 16, 16, 16, 16, 16, 16, 20,
-        17, 16, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 20,
+        17, 24, 24, 24, 24, 24, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        21, 0, 0, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 20,
+        21, 0, 0, 0, 0, 0, 17, 24, 16, 16, 16, 16, 16, 16, 20,
+        17, 18, 18, 18, 18, 18, 20, 0, 17, 16, 16, 16, 16, 16, 20,
         17, 16, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 16, 24, 20,
         25, 16, 16, 16, 24, 24, 28, 0, 25, 24, 24, 16, 20, 0, 21,
         1, 17, 16, 20, 0, 0, 0, 0, 0, 0, 0, 17, 20, 0, 21,
@@ -165,7 +165,7 @@ public class Board extends JPanel implements ActionListener {
         FontMetrics metr = this.getFontMetrics(small);
         
         try {
-            FileReader file1 = new FileReader("images/pacman/marios.png");
+            FileReader file1 = new FileReader("images/pacman/mario.png");
             file1.read();
             FileReader file2 = new FileReader("images/pacman/pacman.png");
             file2.read();
@@ -234,6 +234,8 @@ public class Board extends JPanel implements ActionListener {
 
         if (pacsLeft == 0) {
             inGame = false;
+            initGame();
+            
         }
 
         continueLevel();
@@ -541,7 +543,7 @@ public class Board extends JPanel implements ActionListener {
 
     private void loadImages() {
     	
-    	if (pacsLeft==3 || pacsLeft==1) {
+    	if (pacsLeft==3) {
         ghost = new ImageIcon("images/pacman/ghost.png").getImage();
         pacman1 = new ImageIcon("images/pacman/pacman.png").getImage();
         pacman2up = new ImageIcon("images/pacman/up1.png").getImage();
@@ -558,7 +560,8 @@ public class Board extends JPanel implements ActionListener {
         pacman4right = new ImageIcon("images/pacman/right3.png").getImage();
     	}
     	
-    	else{
+    	else if (pacsLeft==2){
+    		ghost = new ImageIcon("images/pacman/pacman.png").getImage();
             pacman1 = new ImageIcon("images/pacman/mario.png").getImage();
             pacman2up = new ImageIcon("images/pacman/mario.png").getImage();
             pacman3up = new ImageIcon("images/pacman/mario.png").getImage();
@@ -572,8 +575,24 @@ public class Board extends JPanel implements ActionListener {
             pacman2right = new ImageIcon("images/pacman/mario.png").getImage();
             pacman3right = new ImageIcon("images/pacman/mario.png").getImage();
             pacman4right = new ImageIcon("images/pacman/mario.png").getImage();
-        	}
-
+        	
+    	} else if (pacsLeft==1) {
+    	
+    	ghost = new ImageIcon("images/pacman/mario.png").getImage();
+        pacman1 = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman2up = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman3up = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman4up = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman2down = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman3down = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman4down = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman2left = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman3left = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman4left = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman2right = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman3right = new ImageIcon("images/pacman/ghost.png").getImage();
+        pacman4right = new ImageIcon("images/pacman/ghost.png").getImage();
+    	}
     }
 
     @Override
@@ -638,7 +657,7 @@ public class Board extends JPanel implements ActionListener {
             } else {
                 if (key == 's' || key == 'S') {
                     inGame = true;
-                    initGame();
+                    
                 }
             }
         }
