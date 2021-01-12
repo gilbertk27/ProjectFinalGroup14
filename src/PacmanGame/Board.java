@@ -14,13 +14,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -50,7 +52,8 @@ public class Board extends JPanel implements ActionListener {
     private int pacAnimDir = 1;
     private int pacmanAnimPos = 0;
     private int N_GHOSTS = 5;
-    private int pacsLeft, score;
+    private int pacsLeft;
+	private static int score;
     private int[] dx, dy;
     private int[] ghost_x, ghost_y, ghost_dx, ghost_dy, ghostSpeed;
 
@@ -129,19 +132,19 @@ public class Board extends JPanel implements ActionListener {
         initGame();
     }
 
-//    private void doAnim() {
-//
-//        pacAnimCount--;
-//
-//        if (pacAnimCount <= 0) {
-//            pacAnimCount = PAC_ANIM_DELAY;
-//            pacmanAnimPos = pacmanAnimPos + pacAnimDir;
-//
-//            if (pacmanAnimPos == (PACMAN_ANIM_COUNT - 1) || pacmanAnimPos == 0) {
-//                pacAnimDir = -pacAnimDir;
-//            }
-//        }
-//    }
+    private void doAnim() {
+
+        pacAnimCount--;
+
+        if (pacAnimCount <= 0) {
+            pacAnimCount = PAC_ANIM_DELAY;
+            pacmanAnimPos = pacmanAnimPos + pacAnimDir;
+
+            if (pacmanAnimPos == (PACMAN_ANIM_COUNT - 1) || pacmanAnimPos == 0) {
+                pacAnimDir = -pacAnimDir;
+            }
+        }
+    }
 
     private void playGame(Graphics2D g2d) {
 
@@ -219,6 +222,26 @@ public class Board extends JPanel implements ActionListener {
         if (finished) {
 
             score = 0;
+            try {
+                File inputFile = new File("C:/JavaProgramming/gameData/complete.txt");
+                File outputFile = new File("C:/JavaProgramming/gameData/scores/Highscores.txt");
+
+                FileInputStream fis = new FileInputStream(inputFile);
+                FileOutputStream fos = new FileOutputStream(outputFile);
+                int c;
+
+            while ((c = fis.read()) != -1) {
+               fos.write(c);
+            }
+
+            fis.close();
+            fos.close();
+            } catch (FileNotFoundException e) {
+                System.err.println("FileStreamsTest: " + e);
+            } catch (IOException e) {
+                System.err.println("FileStreamsTest: " + e);
+            }
+        
             inGame = false;
             
             if (N_GHOSTS < MAX_GHOSTS) {
@@ -233,7 +256,7 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private void death() {
+    private void death(){
 
         pacsLeft--;
         
@@ -258,7 +281,29 @@ public class Board extends JPanel implements ActionListener {
 		
 		catch (IOException x) {
 			System. err.println(x);
-		} //end catch0
+		} //end catch
+        }
+        
+        if (pacsLeft == 0) {
+        try {
+            File inputFile = new File("C:/JavaProgramming/gameData/failed.txt");
+            File outputFile = new File("C:/JavaProgramming/gameData/scores/Highscores.txt");
+
+            FileInputStream fis = new FileInputStream(inputFile);
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            int c;
+
+        while ((c = fis.read()) != -1) {
+           fos.write(c);
+        }
+
+        fis.close();
+        fos.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("FileStreamsTest: " + e);
+        } catch (IOException e) {
+            System.err.println("FileStreamsTest: " + e);
+        }
         }
         
         if (pacsLeft == 0) {
@@ -266,10 +311,9 @@ public class Board extends JPanel implements ActionListener {
             initGame();
             
         }
-
         continueLevel();
     }
-
+    
     private void moveGhosts(Graphics2D g2d) {
 
         short i;
