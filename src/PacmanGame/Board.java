@@ -16,6 +16,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -165,7 +170,7 @@ public class Board extends JPanel implements ActionListener {
         FontMetrics metr = this.getFontMetrics(small);
         
         try {
-            FileReader file1 = new FileReader("images/pacman/mario.png");
+            FileReader file1 = new FileReader("images/pacman/marios.png");
             file1.read();
             FileReader file2 = new FileReader("images/pacman/pacman.png");
             file2.read();
@@ -231,7 +236,31 @@ public class Board extends JPanel implements ActionListener {
     private void death() {
 
         pacsLeft--;
-
+        
+        if (pacsLeft == 0) {
+		//create path variables 
+		Path p = Paths.get("C:/JavaProgramming/gameData");
+		Path p1 = Paths.get("scores");
+		//Path p2 = Paths.get("backup");
+		Path p3 = Paths.get("Highscores.txt");
+		//create path for the working directory 
+		Path woD = p.resolve(p1);
+		//create path for the working file
+		Path woF = p.resolve(p1.resolve(p3));
+		try {
+			if (Files.notExists(woD))
+				Files.createDirectories( woD);
+			//endif
+			if (Files.notExists(woF))
+				Files.createFile( woF);
+			//endif
+		} //end try
+		
+		catch (IOException x) {
+			System. err.println(x);
+		} //end catch0
+        }
+        
         if (pacsLeft == 0) {
             inGame = false;
             initGame();
@@ -611,7 +640,6 @@ public class Board extends JPanel implements ActionListener {
 
         drawMaze(g2d);
         drawScore(g2d);
-        //doAnim();
 
         if (inGame) {
             playGame(g2d);
